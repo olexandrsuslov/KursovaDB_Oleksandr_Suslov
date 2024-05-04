@@ -1,0 +1,233 @@
+@model KursovaDBFinal.Models.InventoryLocation
+@{
+    ViewBag.Title = "Inventory Locations";
+    Layout = "_Layout";
+}
+
+<h1>Inventory Locations</h1>
+<div class="row">
+    <div class="col-md-6">
+        <button class="btn btn-primary" style="background-color: #0d6efd" onclick="getAllStockItems()">GET /api/InventoryLocation</button>
+        <div id="stockItems"></div>
+    </div>
+    <div class="col-md-6">
+        <button class="btn btn-primary" style="background-color: #0d6efd" onclick="getStockItemById()">GET /api/InventoryLocation/{id}</button>
+        <div class="form-group col-md-4">
+            <input name="getItemById" type="text" id="getItemById" class="form-control" placeholder="Enter Stock Item ID">
+        </div>
+        <div id="stockItemById"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-4">
+            <form>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" style="background-color: mediumseagreen" onclick="createStockItem()">POST /api/InventoryLocation</button>
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="InventoryLocationId"/>
+                <div class="form-group">
+                    <label asp-for="InventoryItemId" class="control-label"></label>
+                    <select asp-for="InventoryItemId" class ="form-control" asp-items="ViewBag.InventoryItemsId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Row" class="control-label"></label>
+                    <input asp-for="Row" class="form-control"/>
+                    <span asp-validation-for="Row" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Shelf" class="control-label"></label>
+                    <input asp-for="Shelf" class="form-control"/>
+                    <span asp-validation-for="Shelf" class="text-danger"></span>
+                </div>
+            </form>
+        </div>
+        <div id="postItemMsg"></div>
+    </div>
+    <div class="col-md-6">
+        <button class="btn btn-primary" style="background-color: red" onclick="deleteStockItemById()">DELETE /api/InventoryLocation/{id}</button>
+        <div class="form-group col-md-4">
+            <input name="deleteItemById" type="text" id="deleteItemById" class="form-control" placeholder="Enter Stock Item ID">
+        </div>  
+    </div>
+</div>
+
+    <style>
+    button {
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        #stockTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #stockTable th, #stockTable td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        #stockTable th {
+                background-color: #001427;
+                text-align: left;
+                font-weight: bold;
+                color: white;
+        }
+
+        #stockTable td {
+            text-align: left;
+        }
+
+        #stockTable tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        #stockTable tr:hover {
+            background-color: #e9e9e9;
+        }
+    </style>
+
+@section scripts {
+    <script>
+            function getAllStockItems() {
+                $.ajax({
+                    url: '/api/InventoryLocation',
+                    type: 'GET',
+                    success: function (data) {
+                        let stockItemsHtml = '<table id="stockTable" class="table table-striped"><thead><tr><th>ID</th><th>Inventory Item ID</th><th>Row</th><th>Shelf</th></tr></thead><tbody>';
+            
+                        $.each(data, function (index, stockItem) {
+                            stockItemsHtml += '<tr>';
+                            stockItemsHtml += '<td>' + stockItem.inventoryLocationId + '</td>';
+                            stockItemsHtml += '<td>' + stockItem.inventoryItemId + '</td>';
+                            stockItemsHtml += '<td>' + stockItem.row + '</td>';
+                            stockItemsHtml += '<td>' + stockItem.shelf + '</td>';
+                            stockItemsHtml += '</tr>';
+                        });
+            
+                        stockItemsHtml += '</tbody></table>';
+                        $('#stockItems').html(stockItemsHtml);
+                        $('#stockTable').DataTable();
+                    },
+                    error: function (xhr, status, error) {
+                        alert(error);
+                    }
+                });
+            }
+
+                        function getStockItemById() {
+                            const id = $('#getItemById').val(); 
+                            if (!id || isNaN(id)) {
+                                alert("Please enter a valid Inventory Location ID");
+                                return; 
+                            }
+                            $.ajax({
+                                url: `/api/InventoryLocation/${id}`,
+                                type: 'GET',
+                                success: function (data) {
+                                    $('#getItemById').val(''); 
+                                    let stockItemsHtml = '<table id="stockTable" class="table table-striped"><thead><tr><th>ID</th><th>Inventory Item ID</th><th>Row</th><th>Shelf</th></tr></thead><tbody>';
+                                        stockItemsHtml += '<tr>';
+                                        stockItemsHtml += '<td>' + data.inventoryLocationId + '</td>';
+                                        stockItemsHtml += '<td>' + data.inventoryItemId + '</td>';
+                                        stockItemsHtml += '<td>' + data.row + '</td>';
+                                        stockItemsHtml += '<td>' + data.shelf + '</td>';
+                                        stockItemsHtml += '</tr>';
+                        
+                                    stockItemsHtml += '</tbody></table>';
+                                    $('#stockItemById').html(stockItemsHtml);
+                                },
+                                error: function (xhr, status, error) {
+                                    if (xhr.status === 404)
+                                        alert("There is no Inventory Location with given ID");
+                                    else 
+                                        alert(error);
+                                }
+                            });
+                        }
+                                                function deleteStockItemById() {
+                                                        const id = $('#deleteItemById').val();
+                                                            if (!id || isNaN(id)) {
+                                                                alert("Please enter a valid Inventory Location ID");
+                                                                return;
+                                                            }
+                                                    $.ajax({
+                                                        url: `/api/InventoryLocation/${id}`,
+                                                        type: 'DELETE',
+                                                        success: function (data) {
+                                                            $('#deleteItemById').val('');
+                                                            alert('Item deleted successfully!');
+                                                            getAllStockItems();
+                                                        },
+                                                        error: function (xhr, status, error) {
+                                                           if (xhr.status === 404)
+                                                               alert("There is no Inventory Location with given ID");
+                                                           else 
+                                                               alert(error);
+                                                        }
+                                                    });
+                                                }
+                             
+                        
+            function createStockItem() {
+                const newStockItem = {
+                    inventoryItemId: $('#InventoryItemId').val(),
+                    row: $('#Row').val(),
+                    shelf: $('#Shelf').val(),
+                    inventoryItem: null
+                };
+                if (!newStockItem.row || newStockItem.row <= 0)
+                    {
+                        alert("Inventory Location Row must be > 0.");
+                        return;
+                    }
+                
+                 if (!newStockItem.shelf || newStockItem.shelf <= 0)
+                        {
+                            alert("Inventory Location Shelf must be > 0.");
+                            return;
+                        }
+
+                $.ajax({
+                    url: '/api/InventoryLocation',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(newStockItem),
+                    success: function (data) {
+                        getAllStockItems(); 
+                        $('form')[0].reset();
+                    },
+                    error: function (xhr, status, error) {
+                          if (xhr.responseText.includes('inventory_item_uc'))
+                          {
+                              alert("Location data for this Inventory Item already exists.");
+                          } else {
+                              alert(error);
+                          }
+                    }
+                });
+            }
+            $(document).ready(function () {
+                // Prevent form submission
+                $('form').submit(function (e) {
+                    e.preventDefault();
+                });
+            });
+    </script>
+}

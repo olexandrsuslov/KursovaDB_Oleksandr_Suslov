@@ -1,0 +1,110 @@
+@model IEnumerable<KursovaDBFinal.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Transactions";
+}
+
+<h1>Transactions</h1>
+
+<table id="transactionTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalSum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentMethod)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalSum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order.OrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentMethod.Name)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.TransactionId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TransactionId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<style>
+                h1 {
+                    margin-bottom: 20px;
+                }
+        
+                p {
+                    margin-bottom: 10px;
+                }
+        
+                a {
+                    color: #007bff;
+                    text-decoration: none;
+                }
+        
+                .inputs {
+                    margin-bottom: 20px;
+                }
+        
+                .inputs td {
+                    padding: 5px;
+                }
+        
+                #transactionTable {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+        
+                #transactionTable th, #transactionTable td {
+                    border: 1px solid #ccc;
+                    padding: 8px;
+                }
+        
+                #transactionTable th {
+                    background-color: #001427;
+                    text-align: left;
+                    font-weight: bold;
+                    color: white;
+                }
+        
+                #transactionTable td {
+                    text-align: left;
+                }
+        
+                #transactionTable tr:nth-child(even) {
+                    background-color: #f9f9f9;
+                }
+        
+                #transactionTable tr:hover {
+                    background-color: #e9e9e9;
+                }
+</style>
+
+@section Scripts
+{
+    <script>
+        const table = $('#transactionTable').DataTable();
+    </script>
+}

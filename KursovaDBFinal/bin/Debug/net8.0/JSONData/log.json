@@ -1,0 +1,524 @@
+[
+  {
+    "User": "admin@email.com",
+    "Action": "Logged in",
+    "Table": "Users",
+    "Timestamp": "2024-05-04T01:44:49.245482+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:44:55.874811Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Customers",
+    "Timestamp": "2024-05-04T01:45:21.142867+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:48:25.138883Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:48:31.041786Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:48:31.996163Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:48:33.214907Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Edited",
+    "Table": "Appliance with id 12195",
+    "Timestamp": "2024-05-03T22:50:01.172621Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:50:01.181828Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:50:13.336074Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliance with id 12195",
+    "Timestamp": "2024-05-03T22:50:18.711844Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:50:22.15111Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:50:29.38348Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Deleted",
+    "Table": "Appliance with id 12395",
+    "Timestamp": "2024-05-04T01:50:37.104058+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:50:37.109807Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:50:40.998068Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:50:46.77684Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Deleted",
+    "Table": "Appliance with id 12195",
+    "Timestamp": "2024-05-04T01:51:03.84191+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:51:03.850754Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:51:08.599168Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:51:15.185546Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:51:16.963836Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:51:18.30709Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:51:20.593558Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:51:34.781253Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:51:36.284235Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Edited",
+    "Table": "Appliance with id 12197",
+    "Timestamp": "2024-05-03T22:51:49.090641Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:51:49.095928Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:51:52.601207Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Deleted",
+    "Table": "Appliance with id 12197",
+    "Timestamp": "2024-05-04T01:51:56.504796+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:51:56.510274Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:51:58.680025Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Created",
+    "Table": "Appliance",
+    "Timestamp": "2024-05-03T22:52:16.96095Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-03T22:52:22.283596Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Customers",
+    "Timestamp": "2024-05-04T01:52:44.150625+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Customers",
+    "Timestamp": "2024-05-04T01:53:04.680916+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Customer with id 40087",
+    "Timestamp": "2024-05-04T01:53:07.528498+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Customers",
+    "Timestamp": "2024-05-04T01:53:10.286789+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Deleted",
+    "Table": "Customer with id 40087",
+    "Timestamp": "2024-05-04T01:53:16.942819+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Customers",
+    "Timestamp": "2024-05-04T01:53:16.949119+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Customers",
+    "Timestamp": "2024-05-04T01:53:37.859124+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Orders",
+    "Timestamp": "2024-05-03T22:53:44.096268Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Orders",
+    "Timestamp": "2024-05-03T22:53:51.153029Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Order with id 35885",
+    "Timestamp": "2024-05-03T22:54:25.178671Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Edited",
+    "Table": "Order with id 35885",
+    "Timestamp": "2024-05-03T22:54:31.544203Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Orders",
+    "Timestamp": "2024-05-03T22:54:31.548208Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Edited",
+    "Table": "Order with id 35717",
+    "Timestamp": "2024-05-03T22:54:42.808115Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Orders",
+    "Timestamp": "2024-05-03T22:54:42.812767Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Edited",
+    "Table": "Order with id 35680",
+    "Timestamp": "2024-05-03T22:54:52.665081Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Orders",
+    "Timestamp": "2024-05-03T22:54:52.671047Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Deleted",
+    "Table": "Order with id 35726",
+    "Timestamp": "2024-05-04T01:55:00.730583+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Orders",
+    "Timestamp": "2024-05-03T22:55:00.736173Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Transactions",
+    "Timestamp": "2024-05-03T22:55:09.962048Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Deleted",
+    "Table": "Transaction with id 28753",
+    "Timestamp": "2024-05-03T22:55:14.130215Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Transactions",
+    "Timestamp": "2024-05-03T22:55:14.136634Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Transaction with id 28414",
+    "Timestamp": "2024-05-03T22:55:23.025485Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Transactions",
+    "Timestamp": "2024-05-03T22:55:24.951058Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Inventory Locations",
+    "Timestamp": "2024-05-03T22:55:40.798109Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Inventory Location with id 8005",
+    "Timestamp": "2024-05-03T22:55:58.897826Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Deleted",
+    "Table": "Inventory Location with id 8005",
+    "Timestamp": "2024-05-04T01:56:11.492816+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Inventory Locations",
+    "Timestamp": "2024-05-03T22:56:12.597069Z"
+  },
+  {
+    "User": "User",
+    "Action": "Viewed",
+    "Table": "Inventory Locations",
+    "Timestamp": "2024-05-03T23:31:19.814443Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Logged in",
+    "Table": "Users",
+    "Timestamp": "2024-05-04T02:31:37.726876+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Logged out",
+    "Table": "Users",
+    "Timestamp": "2024-05-04T02:34:18.299147+03:00"
+  },
+  {
+    "User": "User",
+    "Action": "Registered",
+    "Table": "Users",
+    "Timestamp": "2024-05-04T02:34:53.769573+03:00"
+  },
+  {
+    "User": "sanochok",
+    "Action": "Logged in",
+    "Table": "Users",
+    "Timestamp": "2024-05-04T02:34:59.716302+03:00"
+  },
+  {
+    "User": "sanochok",
+    "Action": "Viewed",
+    "Table": "Customers",
+    "Timestamp": "2024-05-04T02:35:24.612201+03:00"
+  },
+  {
+    "User": "sanochok",
+    "Action": "Viewed",
+    "Table": "Orders",
+    "Timestamp": "2024-05-03T23:35:26.856849Z"
+  },
+  {
+    "User": "sanochok",
+    "Action": "Logged out",
+    "Table": "Users",
+    "Timestamp": "2024-05-04T02:36:11.044686+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Logged in",
+    "Table": "Users",
+    "Timestamp": "2024-05-04T02:57:38.430171+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Dashboard",
+    "Timestamp": "2024-05-04T02:59:32.550754+03:00"
+  },
+  {
+    "User": "User",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-04T00:10:53.876063Z"
+  },
+  {
+    "User": "User",
+    "Action": "Deleted",
+    "Table": "Appliance with id 14196",
+    "Timestamp": "2024-05-04T03:10:59.516562+03:00"
+  },
+  {
+    "User": "User",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-04T00:10:59.522784Z"
+  },
+  {
+    "User": "User",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-04T00:14:05.200299Z"
+  },
+  {
+    "User": "User",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-04T00:14:51.31847Z"
+  },
+  {
+    "User": "User",
+    "Action": "Viewed",
+    "Table": "Appliance with id 12196",
+    "Timestamp": "2024-05-04T00:14:54.486072Z"
+  },
+  {
+    "User": "User",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-04T00:15:33.365936Z"
+  },
+  {
+    "User": "User",
+    "Action": "Viewed",
+    "Table": "Appliances",
+    "Timestamp": "2024-05-04T00:15:41.711735Z"
+  },
+  {
+    "User": "User",
+    "Action": "Viewed",
+    "Table": "Customers",
+    "Timestamp": "2024-05-04T03:16:19.867069+03:00"
+  },
+  {
+    "User": "User",
+    "Action": "Viewed",
+    "Table": "Orders",
+    "Timestamp": "2024-05-04T00:16:50.568908Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Logged in",
+    "Table": "Users",
+    "Timestamp": "2024-05-04T03:18:00.217621+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Transactions",
+    "Timestamp": "2024-05-04T00:19:52.612998Z"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Dashboard",
+    "Timestamp": "2024-05-04T03:20:30.361058+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Dashboard",
+    "Timestamp": "2024-05-04T03:22:00.515193+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Viewed",
+    "Table": "Dashboard",
+    "Timestamp": "2024-05-04T03:27:11.648671+03:00"
+  },
+  {
+    "User": "admin@email.com",
+    "Action": "Exported",
+    "Table": "Products, Customers, PaymentTransactions",
+    "Timestamp": "2024-05-04T03:29:02.279291+03:00"
+  }
+]

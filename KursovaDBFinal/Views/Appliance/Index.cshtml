@@ -1,0 +1,137 @@
+@model IPagedList<KursovaDBFinal.Models.Appliance>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+@{
+    ViewData["Title"] = "Appliances";
+}
+
+<h1>Appliances</h1>
+
+
+@using (Html.BeginForm("Index", "Appliance", FormMethod.Get))
+{
+    <div class="row mb-3" style="margin-top: 100px;">
+        <div class="col">
+            <a asp-action="Create" class="btn btn-primary" style="background-color: #0d6efd;">Create New</a>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+                <button class="btn btn-primary" style="background-color: #0d6efd;" type="submit" value="Search">Search</button>
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="pagination-container">
+            <!-- Paginated list -->
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-3">
+                        <div class="card mb-3">
+                            <img src="@item.PhotoUrl" class="card-img-top" alt="appliance photo">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">
+                                    @item.Name 
+                                </h5>
+                                <h6 class="card-title">
+                                    @item.Category.Name 
+                                </h6>
+                                <p class="card-text">@item.Description</p>
+                                <div class="mt-auto justify-content-between" style="display: flex"> 
+                                    <h5 class="card-title" style="color: darkgray; margin-bottom: 10px">
+                                        @item.Price$
+                                    </h5>
+                                    <div class="dropdown">
+                                      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Actions
+                                      </a>
+                                    
+                                      <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@item.ApplianceId">Edit</a></li>
+                                        <li><a class="dropdown-item" asp-action="Details" asp-route-id="@item.ApplianceId">Details</a></li>
+                                        <li><a class="dropdown-item" asp-action="Delete" asp-route-id="@item.ApplianceId">Delete</a></li>
+                                      </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <!-- Pagination links -->
+            <nav aria-label="Page navigation" id="productPageNav">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @((Model.PageNumber == 1) ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = 1, currentFilter = ViewBag.CurrentFilter })">First</a>
+                    </li>
+                    <li class="page-item @((Model.PageNumber == 1) ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, currentFilter = ViewBag.CurrentFilter })">Previous</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</a>
+                    </li>
+                    <li class="page-item @((Model.PageNumber == Model.PageCount) ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, currentFilter = ViewBag.CurrentFilter })">Next</a>
+                    </li>
+                    <li class="page-item @((Model.PageNumber == Model.PageCount) ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, currentFilter = ViewBag.CurrentFilter })">Last</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>                     
+    </div>
+</div>
+
+
+<style>
+#SearchString {
+    border: 1px solid rgba(1, 1, 1, 0.3);
+    border-radius: 5px 0 0 5px;
+}
+        .card {
+            height: 500px;
+        }
+        .sidebar > h5 {
+            color: #3498DB;
+            margin-bottom: 20px;
+        }
+        img {
+            width: 250px;
+            height: 250px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .card-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #productPageNav {
+            position: sticky;
+            bottom: 20px;
+        }
+    </style>
+
+@section Scripts
+{
+    <script>
+ 
+    </script>
+}

@@ -1,0 +1,153 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - HomeTech</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.4/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="~/KursovaDBFinal.styles.css" asp-append-version="true"/>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <i style="color: white; margin-left: 10px;" class="fas fa-solid fa-bars" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"></i>
+            <a style="margin-left: 20px;" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HomeTech</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
+                <div class="d-flex align-items-center">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <ul>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Profile">@User?.Identity?.Name</a>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+        <h4 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close" id="closeBtn"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Appliance" asp-action="Index"><i class="fas fa-tv"></i> Appliances</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Customer" asp-action="Index"><i class="fas fa-users"></i> Customers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Order" asp-action="Index"><i class="fas fa-shopping-cart"></i> Orders</a>
+            </li>
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Manager"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Transaction" asp-action="Index"><i class="fa-brands fa-cc-visa"></i> Transactions</a>
+                </li>
+            }     
+
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="InventoryLocations"><i class="fa-solid fa-location-dot"></i> Inventory</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="UserActivity"><i class="fa-solid fa-chart-line"></i> User Activity</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Dashboard"><i class="fas fa-chart-bar"></i> Dashboard</a>
+                </li>
+            }
+            
+        </ul>
+        <hr class="dropdown-divider">
+        <ul class="nav flex-column mb-auto">
+            <li class="nav-item">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Profile">@User?.Identity?.Name</a>
+                }
+                else
+                {
+                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                }
+            </li>
+            <li class="nav-item">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                }
+                else
+                {
+                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register"><i class="fas fa-user-plus"></i> Register</a>
+                }
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2024 - HomeTech - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+</footer>
+<style>
+    a.nav-link {
+        color: white; !important
+    }
+    i {
+        margin-right: 10px;
+    }
+</style>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.4/js/dataTables.js"></script>
+<script src="https://kit.fontawesome.com/ae4df000e7.js" crossorigin="anonymous"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

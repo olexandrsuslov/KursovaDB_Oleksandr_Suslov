@@ -1,0 +1,106 @@
+@model IEnumerable<KursovaDBFinal.Models.Customer>
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<h1>Customers</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table id="customerTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Phone Number
+            </th>
+            <th>
+                User ID
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.UserId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CustomerId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<style>
+    h1 {
+                margin-bottom: 20px;
+            }
+    
+            p {
+                margin-bottom: 10px;
+            }
+    
+            a {
+                color: #007bff;
+                text-decoration: none;
+            }
+    
+            #customerTable {
+                width: 100%;
+                border-collapse: collapse;
+            }
+    
+            #customerTable th, #customerTable td {
+                border: 1px solid #ccc;
+                padding: 8px;
+            }
+    
+            #customerTable th {
+                background-color: #001427;
+                text-align: left;
+                font-weight: bold;
+                color: white;
+            }
+    
+            #customerTable td {
+                text-align: left;
+            }
+    
+            #customerTable tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+    
+            #customerTable tr:hover {
+                background-color: #e9e9e9;
+            }
+</style>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            const table = $('#customerTable').DataTable();
+        });
+    </script>
+}
+    

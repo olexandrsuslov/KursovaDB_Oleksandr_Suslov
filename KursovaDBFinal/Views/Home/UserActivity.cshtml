@@ -1,0 +1,134 @@
+@model System.Collections.Generic.List<KursovaDBFinal.Loggers.LogEntry>
+
+@{
+    ViewBag.Title = "User Protocol";
+    Layout = "_Layout";
+}
+
+<h1>User Activity</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <table class="inputs">
+                <tbody><tr>
+                    <td>Start Date:</td>
+                    <td><input type="datetime-local" id="min" name="min"></td>
+                </tr>
+                <tr>
+                    <td>End Date:</td>
+                    <td><input type="datetime-local" id="max" name="max"></td>
+                </tr>
+                </tbody>
+            </table>            
+        </div>
+        <div class="col-md-9">
+            <table id="logTable" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Action</th>
+                    <th>Data</th>
+                    <th>Timestamp</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.User</td>
+                        <td>@item.Action</td>
+                        <td>@item.Table</td>
+                        <td>@item.Timestamp</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+</div>
+
+
+<style>
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .inputs {
+            margin-bottom: 20px;
+        }
+
+        .inputs td {
+            padding: 5px;
+        }
+        
+        #logTable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #logTable th, #logTable td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        #logTable th {
+                background-color: #001427;
+                text-align: left;
+                font-weight: bold;
+                color: white;
+        }
+
+        #logTable td {
+            text-align: left;
+        }
+
+        #logTable tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        #logTable tr:hover {
+            background-color: #e9e9e9;
+        }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+@section Scripts
+{
+    <script>
+$(document).ready(function () {
+    const minEl = document.querySelector('#min');
+    const maxEl = document.querySelector('#max');
+    const table = $('#logTable').DataTable();
+
+    // Define a custom filter function for DataTables
+    table.search.fixed('range', function (searchStr, data, index) {
+        var minDateStr = minEl.value;
+        var maxDateStr = maxEl.value;
+        var timestampStr = data[3]; // Assuming timestamp is in the 4th column (index 3)
+
+        // Convert strings to Date objects using Moment.js (or similar)
+        var minDate = moment(minDateStr).toDate();
+        var maxDate = moment(maxDateStr).toDate();
+        var timestamp = moment(timestampStr, "DD.MM.YYYY HH:mm:ss").toDate(); // Assuming specific format
+
+        // Ensure valid dates before comparison
+        if (minDate.getTime() && maxDate.getTime()) {
+            // Filter based on timestamps within the date range (inclusive)
+            return timestamp >= minDate && timestamp <= maxDate;
+        }
+
+        // No valid dates provided, don't filter
+        return true;
+    });
+
+    // Update table on date input changes
+    minEl.addEventListener('input', function () {
+        table.draw();
+    });
+    maxEl.addEventListener('input', function () {
+        table.draw();
+    });
+});
+    </script>
+}

@@ -1,0 +1,507 @@
+@model  KursovaDBFinal.Models.DashboardDataViewModel
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "_Layout";
+
+    Dictionary<string, int> categoryCounts = new Dictionary<string, int>();
+
+    foreach (var product in Model.Appliances)
+    {
+        string categoryName = product.Category.Name;
+        if (categoryCounts.ContainsKey(categoryName))
+        {
+            categoryCounts[categoryName]++;
+        }
+        else
+        {
+            categoryCounts.Add(categoryName, 1);
+        }
+    }
+
+    var labels = categoryCounts.Keys.ToArray();
+    var data = categoryCounts.Values.ToArray();
+    
+    Dictionary<string, int> paymentMethodCounts = new Dictionary<string, int>();
+
+    foreach (var transaction in Model.Transactions)
+    {
+        string paymentMethodName = transaction.PaymentMethod.Name;
+        if (paymentMethodCounts.ContainsKey(paymentMethodName))
+        {
+            paymentMethodCounts[paymentMethodName]++;
+        }
+        else
+        {
+            paymentMethodCounts.Add(paymentMethodName, 1);
+        }
+    }
+
+    var paymentLabels = paymentMethodCounts.Keys.ToArray();
+    var paymentData = paymentMethodCounts.Values.ToArray();
+
+    
+    // Dictionary to store category names and average prices
+    Dictionary<string, decimal> categoryAvgPrices = new Dictionary<string, decimal>();
+
+    // Calculate average price by category
+    foreach (var product in Model.Appliances)
+    {
+        string categoryName = product.Category.Name;
+        decimal price = product.Price;
+        if (categoryAvgPrices.ContainsKey(categoryName))
+        {
+            categoryAvgPrices[categoryName] += price;
+        }
+        else
+        {
+            categoryAvgPrices.Add(categoryName, price);
+        }
+    }
+
+    // Calculate average price for each category
+    foreach (var categoryName in categoryAvgPrices.Keys.ToList())
+    {
+        int productCount = Model.Appliances.Count(p => p.Category.Name == categoryName);
+        categoryAvgPrices[categoryName] /= productCount;
+    }
+
+    // Extracting labels and data for the chart
+    var priceLabels = categoryAvgPrices.Keys.ToArray();
+    var avgPrices = categoryAvgPrices.Values.ToArray();
+    
+}
+
+<h1>Dashboard</h1>
+<h3 style="margin-top: 20px">Sales Statistics</h3>
+<div class="row" style="margin-top: 20px">
+    <div class="col-md-5">
+        <canvas id="productsInCategory"></canvas>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-5">
+        <canvas id="paymentMethodsDistribution"></canvas>
+    </div>
+</div>
+<div class="row" style="margin-top: 20px">
+    <canvas id="averagePriceByCategory"></canvas>
+</div>
+
+@* <h3 style="margin-top: 20px">Top 10 Best Selling Appliances</h3> *@
+@* <div class="row" style="margin-top: 20px; align-items: end;"> *@
+@*     <div class="form-group col-md-4"> *@
+@*         <label for="startDate">Start Date:</label> *@
+@*         <input type="date" id="startDate" class="form-control"> *@
+@*     </div> *@
+@*     <div class="form-group col-md-4"> *@
+@*         <label for="endDate">End Date:</label> *@
+@*         <input type="date" id="endDate" class="form-control"> *@
+@*     </div> *@
+@*     <div class="col-md-4"> *@
+@*         <input type="submit" value="Get Top 10 Selling Products" class="btn btn-primary" onclick="getTopSellingProducts()"/> *@
+@*     </div> *@
+@* </div> *@
+@* <div class="row" style="margin-top: 20px" id="topSellingProductsContainer"></div> *@
+
+<h3 style="margin-top: 20px">Total Sales Revenue by Category Over Time</h3>
+<div class="row" style="margin-top: 20px; align-items: end;">
+    <div class="form-group col-md-3">
+        <label for="startDateTwo">Start Date:</label>
+        <input type="date" id="startDateTwo" class="form-control">
+    </div>
+    <div class="form-group col-md-3">
+        <label for="endDateTwo">End Date:</label>
+        <input type="date" id="endDateTwo" class="form-control">
+    </div>
+    <div class="form-group col-md-3">
+        <label for="categoryId" class="control-label"></label>
+        <select id="categoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+    </div>
+    <div class="col-md-3">
+        <input type="submit" value="Get Total Revenue By Category" class="btn btn-primary" onclick="getTotalRevenueByCategory()"/>
+    </div>
+</div>
+<div class="row" style="margin-top: 20px" id="totalRevenueByCategoryContainer"></div>
+
+<h3 style="margin-top: 20px">Total Transaction Distribution Over Time</h3>
+<div class="row" style="margin-top: 20px; align-items: end;">
+    <div class="form-group col-md-3">
+        <label for="startDateThree">Start Date:</label>
+        <input type="date" id="startDateThree" class="form-control">
+    </div>
+    <div class="form-group col-md-3">
+        <label for="endDateThree">End Date:</label>
+        <input type="date" id="endDateThree" class="form-control">
+    </div>
+    <div class="col-md-3">
+        <input type="submit" value="Get Transaction Distribution" class="btn btn-primary" onclick="getTransactionDistribution()"/>
+    </div>
+</div>
+<div class="row" style="margin-top: 20px" id="transactionDistributionContainer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const productsInCategoryCtx = document.getElementById('productsInCategory');
+    let delayedProductsInCategory;
+    new Chart(productsInCategoryCtx, {
+        type: 'pie',
+        data: {
+            labels: @Html.Raw(Json.Serialize(labels)), // Injecting labels array
+            datasets: [{
+                label: 'Number of Appliances in Category',
+                data: @Html.Raw(Json.Serialize(data)), // Injecting data array
+                borderWidth: 1
+            }]
+        },
+        options: {
+                     animation: {
+                       onComplete: () => {
+                         delayedProductsInCategory = true;
+                       },
+                       delay: (context) => {
+                         let delay = 0;
+                         if (context.type === 'data' && context.mode === 'default' && !delayedProductsInCategory) {
+                           delay = context.dataIndex * 100 + context.datasetIndex * 100;
+                         }
+                         return delay;
+                       },
+                     },     
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Appliances Distribution by Category',
+                    font: {
+                        size: 16
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    
+        const paymentMethodsDistributionCtx = document.getElementById('paymentMethodsDistribution');
+        let delayedPaymentMethodsDistribution;
+        new Chart(paymentMethodsDistributionCtx, {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(paymentLabels)), // Injecting labels array
+                datasets: [{
+                    label: 'Number of Transactions using this Payment Method',
+                    data: @Html.Raw(Json.Serialize(paymentData)), // Injecting data array
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                     animation: {
+                       onComplete: () => {
+                         delayedPaymentMethodsDistribution = true;
+                       },
+                       delay: (context) => {
+                         let delay = 0;
+                         if (context.type === 'data' && context.mode === 'default' && !delayedPaymentMethodsDistribution) {
+                           delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                         }
+                         return delay;
+                       },
+                     },                    
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Preferable Payment Methods',
+                        font: {
+                            size: 16
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+     // Average price by category chart
+        const averagePriceByCategoryCtx = document.getElementById('averagePriceByCategory');
+        let delayed;
+        new Chart(averagePriceByCategoryCtx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(priceLabels)), // Injecting labels array
+                datasets: [{
+                    label: 'Average Price',
+                    data: @Html.Raw(Json.Serialize(avgPrices)), // Injecting data array
+                    backgroundColor: 'rgba(12, 202, 74, 0.5)',
+                    borderColor: 'rgba(12, 202, 74, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                     animation: {
+                       onComplete: () => {
+                         delayed = true;
+                       },
+                       delay: (context) => {
+                         let delay = 0;
+                         if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                           delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                         }
+                         return delay;
+                       },
+                     },                     
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Average Price by Category',
+                        font: {
+                            size: 16
+                        }
+                    }
+                }
+            }
+        });
+
+var topSellingProductsChart;
+
+function getTopSellingProducts() {
+        var startDate = document.getElementById('startDate').value;
+        var endDate = document.getElementById('endDate').value;
+
+            if (!startDate || !startDate) {
+                                alert("Please enter a valid date range");
+                                return; 
+                            }    
+                 if (topSellingProductsChart) {
+                        topSellingProductsChart.destroy();
+                    }
+        
+        // AJAX request to fetch top selling products data
+        $.ajax({
+            url: '/Home/GetTopSellingProducts',
+            type: 'GET',
+            data: {
+                startDate: startDate,
+                endDate: endDate
+            },
+            success: function (data) {
+                $('#topSellingProductsContainer').html('<canvas id="topSellingProducts"></canvas>');
+                renderTopSellingProductsChart(data);
+            },
+            error: function (error) {
+                 alert(error);
+            }
+        });
+    }
+
+    function renderTopSellingProductsChart(data) {
+        var ctx = document.getElementById('topSellingProducts');
+        let delayed;
+        topSellingProductsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Items Sold',
+                    data: data.quantities,
+                    backgroundColor: 'rgba(209, 123, 136, 0.5)',
+                    borderColor: 'rgba(209, 123, 136, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                     animation: {
+                       onComplete: () => {
+                         delayed = true;
+                       },
+                       delay: (context) => {
+                         let delay = 0;
+                         if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                           delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                         }
+                         return delay;
+                       },
+                     },                
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Top 10 Best Selling Appliances',
+                        font: {
+                            size: 16
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+var transactionDistributionChart;
+
+function getTransactionDistribution() {
+        var startDate = document.getElementById('startDateThree').value;
+        var endDate = document.getElementById('endDateThree').value;
+
+            if (!startDate || !startDate) {
+                                alert("Please enter a valid date range");
+                                return; 
+                            }    
+                 if (transactionDistributionChart) {
+                        transactionDistributionChart.destroy();
+                    }
+        
+        // AJAX request to fetch top selling products data
+        $.ajax({
+            url: '/Home/GetTransactionDateDistribution',
+            type: 'GET',
+            data: {
+                startDate: startDate,
+                endDate: endDate
+            },
+            success: function (data) {
+                console.log(data);
+                $('#transactionDistributionContainer').html('<canvas id="transactionDistribution"></canvas>');
+                renderTransactionDistributionChart(data);
+            },
+            error: function (error) {
+                 alert(error);
+            }
+        });
+    }
+
+    function renderTransactionDistributionChart(data) {
+        var ctx = document.getElementById('transactionDistribution');
+        let delayed;
+        transactionDistributionChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.dates,
+                datasets: [{
+                    label: 'Transactions Made',
+                    data: data.transactionCounts,
+                    backgroundColor: 'rgba(233, 138, 21, 0.5)',
+                    borderColor: 'rgba(233, 138, 21, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                     animation: {
+                       onComplete: () => {
+                         delayed = true;
+                       },
+                       delay: (context) => {
+                         let delay = 0;
+                         if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                           delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                         }
+                         return delay;
+                       },
+                     },                
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Transaction Distribution Over Time',
+                        font: {
+                            size: 16
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    
+var totalRevenueChart;
+function getTotalRevenueByCategory() {
+        var categoryId = document.getElementById('categoryId').value;
+        var startDate = document.getElementById('startDateTwo').value;
+        var endDate = document.getElementById('endDateTwo').value;
+
+              if (!startDate || !startDate) {
+                                        alert("Please enter a valid date range");
+                                        return; 
+                                    }    
+        // Remove previous chart if exists
+        if (totalRevenueChart) {
+            totalRevenueChart.destroy();
+        }
+
+        // AJAX request to fetch total revenue data
+        $.ajax({
+            url: '/Home/GetTotalRevenueByCategory',
+            type: 'GET',
+            data: {
+                categoryId: categoryId,
+                startDate: startDate,
+                endDate: endDate
+            },
+            success: function (data) {
+                $('#totalRevenueByCategoryContainer').html('<canvas id="totalRevenueByCategory" height="500px"></canvas>');
+                renderTotalRevenueChart(data);
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+ function renderTotalRevenueChart(data) {
+         var ctx = document.getElementById('totalRevenueByCategory');
+         let delayed;
+         totalRevenueChart = new Chart(ctx, {
+             type: 'line',
+             data: {
+                 labels: data.dates,
+                 datasets: [{
+                     label: 'Total Revenue',
+                     data: data.revenue,
+                      borderColor: 'rgba(0, 20, 39, 1)',
+                     borderWidth: 3
+                 }]
+             },
+             options: {
+                     animation: {
+                       onComplete: () => {
+                         delayed = true;
+                       },
+                       delay: (context) => {
+                         let delay = 0;
+                         if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                           delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                         }
+                         return delay;
+                       },
+                     },                     
+                 scales: {
+                     y: {
+                         beginAtZero: true
+                     }
+                 },
+                 plugins: {
+                     title: {
+                         display: true,
+                         text: 'Total Sales Revenue by Category Over Time',
+                         font: {
+                             size: 16
+                         }
+                     }
+                 }
+             }
+         });
+     }
+</script>

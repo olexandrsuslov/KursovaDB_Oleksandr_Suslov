@@ -1,0 +1,164 @@
+@model IEnumerable<KursovaDBFinal.Models.Order>
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h1>Orders</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <table class="inputs">
+                    <tbody>
+                    <tr>
+                        <td>Minimum order sum:</td>
+                        <td><input type="text" id="min" name="min"></td>
+                    </tr>
+                    <tr>
+                        <td>Maximum order sum:</td>
+                        <td><input type="text" id="max" name="max"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <a asp-action="Create" class="btn btn-primary" style="background-color: #0d6efd;">Create New</a>
+            </div>
+            <div class="col-md-9">
+                <table id="orderTable" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            Order Date
+                        </th>
+                        <th>
+                            Total Sum
+                        </th>
+                        <th>
+                            Customer ID
+                        </th>
+                        <th>
+                            Manager User ID
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OrderDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalSum)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Customer.CustomerId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ManagerUser.UserId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status.Name)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+<style>
+            h1 {
+                margin-bottom: 20px;
+            }
+    
+            p {
+                margin-bottom: 10px;
+            }
+    
+            a {
+                color: #007bff;
+                text-decoration: none;
+            }
+    
+            .inputs {
+                margin-bottom: 20px;
+            }
+    
+            .inputs td {
+                padding: 5px;
+            }
+    
+            #orderTable {
+                width: 100%;
+                border-collapse: collapse;
+            }
+    
+            #orderTable th, #orderTable td {
+                border: 1px solid #ccc;
+                padding: 8px;
+            }
+    
+            #orderTable th {
+                background-color: #001427;
+                text-align: left;
+                font-weight: bold;
+                color: white;
+            }
+    
+            #orderTable td {
+                text-align: left;
+            }
+    
+            #orderTable tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+    
+            #orderTable tr:hover {
+                background-color: #e9e9e9;
+            }
+</style>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            const minEl = document.querySelector('#min');
+            const maxEl = document.querySelector('#max');
+            const table = $('#orderTable').DataTable();
+            
+            table.search.fixed('range', function (searchStr, data, index) {
+                var min = parseInt(minEl.value, 10);
+                var max = parseInt(maxEl.value, 10);
+                var sum = parseFloat(data[1]) || 0;
+                console.log(max);
+             
+                if (
+                    (isNaN(min) && isNaN(max)) ||
+                    (isNaN(min) && sum <= max) ||
+                    (min <= sum && isNaN(max)) ||
+                    (min <= sum && sum <= max)
+                ) {
+                    return true;
+                }
+             
+                return false;
+            });
+            minEl.addEventListener('input', function () {
+                table.draw();
+            });
+            maxEl.addEventListener('input', function () {
+                table.draw();
+            });
+        });
+    </script>
+}

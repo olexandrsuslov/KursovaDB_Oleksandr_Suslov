@@ -1,0 +1,234 @@
+@* @model KursovaDBFinal.Models.StockItem *@
+@* *@
+@* @{ *@
+@*     ViewBag.Title = "Stock"; *@
+@*     Layout = "_Layout"; *@
+@* } *@
+@* *@
+@* <h1>Items In Stock</h1> *@
+@* <button class="btn btn-primary" style="background-color: #0d6efd" onclick="getAllStockItems()">GET /api/StockItem</button> *@
+@* <div id="stockItems"></div> *@
+@* <button class="btn btn-primary" style="background-color: #0d6efd" onclick="getStockItemById()">GET /api/StockItem/{id}</button> *@
+@* <div class="form-group col-md-4"> *@
+@*     <input name="getItemById" type="text" id="getItemById" class="form-control" placeholder="Enter Stock Item ID"> *@
+@* </div> *@
+@* <div id="stockItemById"></div> *@
+@* <button class="btn btn-primary" style="background-color: red" onclick="deleteStockItemById()">DELETE /api/StockItem/{id}</button> *@
+@* <div class="form-group col-md-4"> *@
+@*     <input name="deleteItemById" type="text" id="deleteItemById" class="form-control" placeholder="Enter Stock Item ID"> *@
+@* </div> *@
+@*     <div class="col-md-4"> *@
+@*         <form> *@
+@*             <div class="form-group"> *@
+@*                 <button type="submit" class="btn btn-primary" style="background-color: mediumseagreen" onclick="createStockItem()">POST /api/StockItem</button> *@
+@*             </div> *@
+@*             <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+@*             <input type="hidden" asp-for="StockItemId"/> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="ProductId" class="control-label"></label> *@
+@*                 <select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="SupplierId" class="control-label"></label> *@
+@*                 <select asp-for="SupplierId" class ="form-control" asp-items="ViewBag.SupplierId"></select> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Quantity" class="control-label"></label> *@
+@*                 <input asp-for="Quantity" class="form-control"/> *@
+@*                 <span asp-validation-for="Quantity" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="LastUpdated" class="control-label"></label> *@
+@*                 <input asp-for="LastUpdated" class="form-control"/> *@
+@*                 <span asp-validation-for="LastUpdated" class="text-danger"></span> *@
+@*             </div> *@
+@*         </form> *@
+@*     </div> *@
+@* <div id="postItemMsg"></div> *@
+@* *@
+@*     <style> *@
+@*     button { *@
+@*         margin-bottom: 20px; *@
+@*         margin-top: 20px; *@
+@*     } *@
+@* *@
+@*         h1 { *@
+@*             margin-bottom: 20px; *@
+@*         } *@
+@* *@
+@*         p { *@
+@*             margin-bottom: 10px; *@
+@*         } *@
+@* *@
+@*         a { *@
+@*             color: #007bff; *@
+@*             text-decoration: none; *@
+@*         } *@
+@*          *@
+@*         #stockTable { *@
+@*             width: 100%; *@
+@*             border-collapse: collapse; *@
+@*             margin-top: 20px; *@
+@*         } *@
+@* *@
+@*         #stockTable th, #stockTable td { *@
+@*             border: 1px solid #ccc; *@
+@*             padding: 8px; *@
+@*         } *@
+@* *@
+@*         #stockTable th { *@
+@*             background-color: #79b3f3; *@
+@*             text-align: left; *@
+@*             font-weight: bold; *@
+@*         } *@
+@* *@
+@*         #stockTable td { *@
+@*             text-align: left; *@
+@*         } *@
+@* *@
+@*         #stockTable tr:nth-child(even) { *@
+@*             background-color: #f9f9f9; *@
+@*         } *@
+@* *@
+@*         #stockTable tr:hover { *@
+@*             background-color: #e9e9e9; *@
+@*         } *@
+@*     </style> *@
+@* *@
+@* @section scripts { *@
+@*     <script> *@
+@*             function getAllStockItems() { *@
+@*                 $.ajax({ *@
+@*                     url: '/api/StockItem', *@
+@*                     type: 'GET', *@
+@*                     success: function (data) { *@
+@*                         let stockItemsHtml = '<table id="stockTable" class="table table-striped"><thead><tr><th>ID</th><th>Supplier ID</th><th>Product ID</th><th>Quantity</th><th>Last Updated</th></tr></thead><tbody>'; *@
+@*              *@
+@*                         $.each(data, function (index, stockItem) { *@
+@*                             let lastUpdated = new Date(stockItem.lastUpdated); *@
+@*                             const formattedLastUpdated = lastUpdated.toLocaleString(); // Format date as per user's locale *@
+@*              *@
+@*                             stockItemsHtml += '<tr>'; *@
+@*                             stockItemsHtml += '<td>' + stockItem.stockItemId + '</td>'; *@
+@*                             stockItemsHtml += '<td>' + stockItem.supplierId + '</td>'; *@
+@*                             stockItemsHtml += '<td>' + stockItem.productId + '</td>'; *@
+@*                             stockItemsHtml += '<td>' + stockItem.quantity + '</td>'; *@
+@*                             stockItemsHtml += '<td>' + formattedLastUpdated + '</td>'; *@
+@*                             stockItemsHtml += '</tr>'; *@
+@*                         }); *@
+@*              *@
+@*                         stockItemsHtml += '</tbody></table>'; *@
+@*                         $('#stockItems').html(stockItemsHtml); *@
+@*                         $('#stockTable').DataTable(); *@
+@*                     }, *@
+@*                     error: function (xhr, status, error) { *@
+@*                         alert(error); *@
+@*                     } *@
+@*                 }); *@
+@*             } *@
+@* *@
+@*                         function getStockItemById() { *@
+@*                             const id = $('#getItemById').val();  *@
+@*                             if (!id || isNaN(id)) { *@
+@*                                 alert("Please enter a valid Stock Item ID"); *@
+@*                                 return;  *@
+@*                             } *@
+@*                             $.ajax({ *@
+@*                                 url: `/api/StockItem/${id}`, *@
+@*                                 type: 'GET', *@
+@*                                 success: function (data) { *@
+@*                                     $('#getItemById').val('');  *@
+@*                                     let stockItemsHtml = '<table id="stockTable" class="table table-striped"><thead><tr><th>ID</th><th>Product ID</th><th>Quantity</th><th>Last Updated</th></tr></thead><tbody>'; *@
+@*                                         let lastUpdated = new Date(data.lastUpdated); *@
+@*                                         const formattedLastUpdated = lastUpdated.toLocaleString(); // Format date as per user's locale *@
+@*                          *@
+@*                                         stockItemsHtml += '<tr>'; *@
+@*                                         stockItemsHtml += '<td>' + data.stockItemId + '</td>'; *@
+@*                                         stockItemsHtml += '<td>' + data.productId + '</td>'; *@
+@*                                         stockItemsHtml += '<td>' + data.quantity + '</td>'; *@
+@*                                         stockItemsHtml += '<td>' + formattedLastUpdated + '</td>'; *@
+@*                                         stockItemsHtml += '</tr>'; *@
+@*                          *@
+@*                                     stockItemsHtml += '</tbody></table>'; *@
+@*                                     $('#stockItemById').html(stockItemsHtml); *@
+@*                                 }, *@
+@*                                 error: function (xhr, status, error) { *@
+@*                                     if (xhr.status === 404) *@
+@*                                         alert("There is no Stock Item with given ID"); *@
+@*                                     else  *@
+@*                                         alert(error); *@
+@*                                 } *@
+@*                             }); *@
+@*                         } *@
+@*                                                 function deleteStockItemById() { *@
+@*                                                         const id = $('#deleteItemById').val(); *@
+@*                                                             if (!id || isNaN(id)) { *@
+@*                                                                 alert("Please enter a valid Stock Item ID"); *@
+@*                                                                 return; *@
+@*                                                             } *@
+@*                                                     $.ajax({ *@
+@*                                                         url: `/api/StockItem/${id}`, *@
+@*                                                         type: 'DELETE', *@
+@*                                                         success: function (data) { *@
+@*                                                             $('#deleteItemById').val(''); *@
+@*                                                             alert('Item deleted successfully!'); *@
+@*                                                             getAllStockItems(); *@
+@*                                                         }, *@
+@*                                                         error: function (xhr, status, error) { *@
+@*                                                            if (xhr.status === 404) *@
+@*                                                                alert("There is no Stock Item with given ID"); *@
+@*                                                            else  *@
+@*                                                                alert(error); *@
+@*                                                         } *@
+@*                                                     }); *@
+@*                                                 } *@
+@*                               *@
+@*                          *@
+@*             function createStockItem() { *@
+@*                 const newStockItem = { *@
+@*                     lastUpdated: $('#LastUpdated').val(), *@
+@*                     product: null, *@
+@*                     supplier: null, *@
+@*                     productId: $('#ProductId').val(), *@
+@*                     quantity: $('#Quantity').val(), *@
+@*                     supplierId: $('#SupplierId').val(), *@
+@*                 }; *@
+@*                 if (!newStockItem.quantity || newStockItem.quantity < 0) *@
+@*                     { *@
+@*                         alert("Stock Item Quantity must be >= 0."); *@
+@*                         return; *@
+@*                     } *@
+@*                  *@
+@*                 if (!newStockItem.lastUpdated) *@
+@*                     { *@
+@*                         alert("Choose last updated data."); *@
+@*                         return; *@
+@*                     } *@
+@* *@
+@*                 $.ajax({ *@
+@*                     url: '/api/StockItem', *@
+@*                     type: 'POST', *@
+@*                     contentType: 'application/json', *@
+@*                     data: JSON.stringify(newStockItem), *@
+@*                     success: function (data) { *@
+@*                         getAllStockItems();  *@
+@*                         $('form')[0].reset(); *@
+@*                     }, *@
+@*                     error: function (xhr, status, error) { *@
+@*                           if (xhr.responseText.includes('product_id_fk_uc')) *@
+@*                           { *@
+@*                               alert("Stock item data for this product already exists."); *@
+@*                           } else { *@
+@*                               alert(error); *@
+@*                           } *@
+@*                     } *@
+@*                 }); *@
+@*             } *@
+@*             $(document).ready(function () { *@
+@*                 // Prevent form submission *@
+@*                 $('form').submit(function (e) { *@
+@*                     e.preventDefault(); *@
+@*                 }); *@
+@*             }); *@
+@*     </script> *@
+@* } *@
